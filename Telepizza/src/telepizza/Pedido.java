@@ -18,17 +18,26 @@ public class Pedido {
     private boolean domicilio;
     private ArrayList<Pizza> pizzas;
 
-    public Pedido(String nombre, String telefono, String direccion, boolean domicilio) {
+    public Pedido(String nombre, String telefono, String direccion, boolean domicilio , ArrayList<Pizza> pizzas) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
         this.domicilio = domicilio;
-        this.pizzas = new ArrayList<Pizza>();
+        this.pizzas = pizzas;
+    }
+    private String aDomicilio(){
+        String a="";
+        if(domicilio){
+            a="Si";
+        }else{
+            a="No";
+        }
+        return a;
     }
 
     @Override
     public String toString() {
-        return "nombre=" + getNombre() + ", telefono=" + getTelefono() + ", direccion=" + getDireccion() + ", domicilio=" + isDomicilio() + ", pizzas=" + getPizzas();
+        return "nombre : " + getNombre() +"\n"+"telefono : " + getTelefono() +"\n"+"direccion : " + getDireccion() +"\n"+"domicilio : " + aDomicilio() +"\n"+ "************************PIZZAS************************"+"\n"+getPizzas();
     }
 
     /**

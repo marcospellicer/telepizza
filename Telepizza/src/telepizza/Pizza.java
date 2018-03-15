@@ -12,17 +12,48 @@ package telepizza;
 public class Pizza {
     private String sabor;
     private boolean masaFina;
+    private boolean grande;
     private double precio;
 
-    public Pizza(String sabor, boolean masaFina, double precio) {
+    public Pizza(String sabor, boolean masaFina, boolean grande) {
         this.sabor = sabor;
         this.masaFina = masaFina;
-        this.precio = precio;
+        this.grande = grande;
+        this.precio = 0;
+    }
+    
+
+    public void calcularPrecio(){
+     precio=10;
+        if(!masaFina){
+            precio+=3;
+            if(grande){
+                precio+=10;
+            }
+        }else{
+           if(grande){
+                precio+=10;
+            } 
+        }
+    }
+    private String traducir(){
+        String a="";
+        if(masaFina){
+           a=" | Masa Fina "; 
+        }else{
+           a=" | Masa Clasica ";
+        }
+        if(grande){
+           a+="| Grande | " ;
+        }else{
+           a+="| Pequeña | " ; 
+        }
+        return a;
     }
 
     @Override
     public String toString() {
-        return "sabor: " + sabor + " masaFina: " + masaFina + "precio: " + precio;
+        return "sabor: " + getSabor() +traducir()+ "precio: " + getPrecio()+"€"+"\n" ;
     }
     
 
@@ -66,6 +97,20 @@ public class Pizza {
      */
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    /**
+     * @return the grande
+     */
+    public boolean isGrande() {
+        return grande;
+    }
+
+    /**
+     * @param grande the grande to set
+     */
+    public void setGrande(boolean grande) {
+        this.grande = grande;
     }
     
     
