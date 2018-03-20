@@ -56,7 +56,9 @@ public class Pizza {
         return "sabor: " + getSabor() +traducir()+ "precio: " + getPrecio()+"€"+"\n" ;
     }
     
-
+    public String mostrar() {
+        return "sabor: " + getSabor() +traducir()+ "precio: " + getPrecio()+"€"+"\n" ;
+    }
     /**
      * @return the sabor
      */

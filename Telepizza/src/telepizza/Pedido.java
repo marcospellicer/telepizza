@@ -37,7 +37,7 @@ public class Pedido {
 
     @Override
     public String toString() {
-        return "nombre : " + getNombre() +"\n"+"telefono : " + getTelefono() +"\n"+"direccion : " + getDireccion() +"\n"+"domicilio : " + aDomicilio() +"\n"+ "************************PIZZAS************************"+"\n"+getPizzas();
+        return "nombre : " + getNombre() +"\n"+"telefono : " + getTelefono() +"\n"+"direccion : " + getDireccion() +"\n"+"domicilio : " + aDomicilio() +"\n"+ "************************PIZZAS************************"+"\n"+mPizzas();
     }
 
     /**
@@ -46,7 +46,13 @@ public class Pedido {
     public String getNombre() {
         return nombre;
     }
-
+    private String mPizzas(){
+        String aux="";
+        for (int i = 0; i < getPizzas().size(); i++) {
+            aux+=getPizzas().get(i).mostrar();
+        }
+        return aux;
+    }
     /**
      * @param nombre the nombre to set
      */
