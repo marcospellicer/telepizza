@@ -20,11 +20,11 @@ public class interfaz extends javax.swing.JFrame {
      */
     public interfaz() {
         initComponents();
+        pi = new Bd("jdbc:mysql://192.168.4.187:3310/telepizza", "marcos", "marcos");
         pizzas = new ArrayList<>();
-        sabores = new ArrayList<>();
+        sabores = pi.devovlerPizzas();
         masas = new ArrayList<>();
         tamaños = new ArrayList<>();
-        sabores.add("- sabor -");sabores.add("carbonara");sabores.add("peperoni");sabores.add("barbacoa");sabores.add("especial");
         masas.add("- masa -");masas.add("fina");masas.add("clasica");
         tamaños.add("- tamaño -");tamaños.add("grande");tamaños.add("pequeña");
         for (int i = 0; i < sabores.size(); i++) {
@@ -37,7 +37,8 @@ public class interfaz extends javax.swing.JFrame {
            jComboBox1.addItem(tamaños.get(i));
         }
        this.setLocationRelativeTo(null);
-        
+        clientes=pi.devovlerClientes();
+       
     }
 
     /**
@@ -65,6 +66,7 @@ public class interfaz extends javax.swing.JFrame {
         jComboBox3 = new javax.swing.JComboBox<>();
         jList1 = new javax.swing.JList<>();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 0, 51));
@@ -76,6 +78,12 @@ public class interfaz extends javax.swing.JFrame {
         jLabel1.setText("Nombre");
 
         jLabel2.setText("Telefono");
+
+        jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField2FocusLost(evt);
+            }
+        });
 
         jLabel3.setText("Direccion");
 
@@ -150,6 +158,13 @@ public class interfaz extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setText("Finalizar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -171,7 +186,9 @@ public class interfaz extends javax.swing.JFrame {
                 .addContainerGap(12, Short.MAX_VALUE)
                 .addComponent(jList1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
@@ -192,14 +209,17 @@ public class interfaz extends javax.swing.JFrame {
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                         .addComponent(jList1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(74, 74, 74)
@@ -268,7 +288,7 @@ public class interfaz extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if(!jTextField1.getText().equals("")&&!jTextField2.getText().equals("")&&!jTextField3.getText().equals("")&&pizzas.size()>0){
-           boolean b = true;
+           boolean b = true , si=false;
             if(jCheckBox1.isSelected()){
                b=true;
            }else{
@@ -278,6 +298,16 @@ public class interfaz extends javax.swing.JFrame {
             double pre=0;
             for (int i = 0; i < pizzas.size(); i++) {
                 pre+=pizzas.get(i).getPrecio();
+            }
+            for (int i = 0; i < clientes.size(); i++) {
+                if(jTextField2.getText().equals(clientes.get(i).getTelefono())){
+                    si=true;
+                }
+            }
+            if(!si){
+               Cliente c = new Cliente(jTextField1.getText(), jTextField2.getText(), jTextField3.getText());
+               clientes.add(c);
+               pi.guardarCliente(c);
             }
             
             JOptionPane.showMessageDialog(null, pe+"************************PIZZAS************************"+"\n"+"El importe total es: "+pre+"€");
@@ -322,6 +352,23 @@ public class interfaz extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+       this.dispose();
+        interfaz v = new interfaz();
+        v.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
+
+        for (int i = 0; i < clientes.size(); i++) {
+            if(jTextField2.getText().equals(clientes.get(i).getTelefono())){
+                jTextField1.setText(clientes.get(i).getNombre());
+                jTextField3.setText(clientes.get(i).getDireccion());
+            }
+        }
+   
+    }//GEN-LAST:event_jTextField2FocusLost
+
     /**
      * @param args the command line arguments
      */
@@ -356,6 +403,8 @@ public class interfaz extends javax.swing.JFrame {
             }
         });
     }
+    private Bd pi;
+    private ArrayList<Cliente> clientes;
     private DefaultListModel modelo;
     private ArrayList<String> tamaños;
     private ArrayList<String> masas;
@@ -365,6 +414,7 @@ public class interfaz extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
