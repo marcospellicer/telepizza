@@ -60,6 +60,40 @@ public class Bd {
         desconectar();
        return pi;
     }
+     public Cliente devovlerCliente(String tel){
+      conectar();
+       Cliente  c = null;
+        try {
+            Statement s =  (Statement) con.createStatement();
+            ResultSet rs = s.executeQuery("select * from clientes where telefono ='"+tel+"';");
+            
+            if(rs.first()){
+                c = new Cliente(rs.getString("nombre"), rs.getString("telefono"), rs.getString("direccion"));  
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Bd.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        desconectar();
+       return c;
+    }
+     public int estaCliente(String tel){
+      conectar();
+      int aux = -1;
+        try {
+            Statement s =  (Statement) con.createStatement();
+            ResultSet rs = s.executeQuery("select count(*) from clientes where telefono ='"+tel+"';");
+            
+            if(rs.first()){
+          aux= rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Bd.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        desconectar();
+        
+       return aux;
+    }
+    
     public ArrayList<Cliente> devovlerClientes(){
       conectar();
         ArrayList<Cliente> pi = new ArrayList<>();

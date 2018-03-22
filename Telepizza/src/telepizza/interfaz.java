@@ -299,14 +299,9 @@ public class interfaz extends javax.swing.JFrame {
             for (int i = 0; i < pizzas.size(); i++) {
                 pre+=pizzas.get(i).getPrecio();
             }
-            for (int i = 0; i < clientes.size(); i++) {
-                if(jTextField2.getText().equals(clientes.get(i).getTelefono())){
-                    si=true;
-                }
-            }
-            if(!si){
+            
+            if(pi.estaCliente(jTextField2.getText())==0){
                Cliente c = new Cliente(jTextField1.getText(), jTextField2.getText(), jTextField3.getText());
-               clientes.add(c);
                pi.guardarCliente(c);
             }
             
@@ -359,13 +354,13 @@ public class interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
-
-        for (int i = 0; i < clientes.size(); i++) {
-            if(jTextField2.getText().equals(clientes.get(i).getTelefono())){
-                jTextField1.setText(clientes.get(i).getNombre());
-                jTextField3.setText(clientes.get(i).getDireccion());
+        Cliente c =pi.devovlerCliente(jTextField2.getText());
+        
+            if(c!=null){
+                jTextField1.setText(c.getNombre());
+                jTextField3.setText(c.getDireccion());
             }
-        }
+        
    
     }//GEN-LAST:event_jTextField2FocusLost
 
