@@ -123,6 +123,38 @@ public class Bd {
         }
         desconectar();
     }
+    public int buscarCliente(String tel){
+      conectar();
+       int  c = -1;
+        try {
+            Statement s =  (Statement) con.createStatement();
+            ResultSet rs = s.executeQuery("select id from clientes where telefono ='"+tel+"';");
+            
+            if(rs.first()){
+                c =rs.getInt("id");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Bd.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        desconectar();
+       return c;
+    }
+    public void guardarPedido(Pedido p){
+        int aux = buscarCliente(p.getTelefono()) ;
+        conectar();
+        try {
+            
+            Statement s =  (Statement) con.createStatement();
+            
+            s.executeUpdate("insert into pedido values (0,sysdate(),'"+aux+"','"+p.getPizzas().toString()+"',"+p.getPizzas().size()+","+p.getPrecio()+");");
+            
+          
+        } catch (SQLException ex) {
+            Logger.getLogger(Bd.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        desconectar();
+    }
+    
 
     /**
      * @return the con

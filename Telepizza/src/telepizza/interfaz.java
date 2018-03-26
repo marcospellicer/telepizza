@@ -22,13 +22,12 @@ public class interfaz extends javax.swing.JFrame {
         initComponents();
         pi = new Bd("jdbc:mysql://192.168.4.187:3310/telepizza", "marcos", "marcos");
         pizzas = new ArrayList<>();
-        sabores = pi.devovlerPizzas();
         masas = new ArrayList<>();
         tamaños = new ArrayList<>();
         masas.add("- masa -");masas.add("fina");masas.add("clasica");
         tamaños.add("- tamaño -");tamaños.add("grande");tamaños.add("pequeña");
-        for (int i = 0; i < sabores.size(); i++) {
-           jComboBox2.addItem(sabores.get(i));
+        for (int i = 0; i < pi.devovlerPizzas().size(); i++) {
+           jComboBox2.addItem(pi.devovlerPizzas().get(i));
         }
         for (int i = 0; i < masas.size(); i++) {
            jComboBox3.addItem(masas.get(i));
@@ -37,7 +36,7 @@ public class interfaz extends javax.swing.JFrame {
            jComboBox1.addItem(tamaños.get(i));
         }
        this.setLocationRelativeTo(null);
-        clientes=pi.devovlerClientes();
+      
        
     }
 
@@ -287,28 +286,7 @@ public class interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if(!jTextField1.getText().equals("")&&!jTextField2.getText().equals("")&&!jTextField3.getText().equals("")&&pizzas.size()>0){
-           boolean b = true , si=false;
-            if(jCheckBox1.isSelected()){
-               b=true;
-           }else{
-                b=false;
-            }
-            Pedido pe = new Pedido(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(),b, pizzas);
-            double pre=0;
-            for (int i = 0; i < pizzas.size(); i++) {
-                pre+=pizzas.get(i).getPrecio();
-            }
-            
-            if(pi.estaCliente(jTextField2.getText())==0){
-               Cliente c = new Cliente(jTextField1.getText(), jTextField2.getText(), jTextField3.getText());
-               pi.guardarCliente(c);
-            }
-            
-            JOptionPane.showMessageDialog(null, pe+"************************PIZZAS************************"+"\n"+"El importe total es: "+pre+"€");
-        }else{
-            JOptionPane.showMessageDialog(null, "rellena todos los campos");
-        }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
@@ -348,9 +326,34 @@ public class interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       this.dispose();
-        interfaz v = new interfaz();
-        v.setVisible(true);
+       if(!jTextField1.getText().equals("")&&!jTextField2.getText().equals("")&&!jTextField3.getText().equals("")&&pizzas.size()>0){
+           boolean b = true , si=false;
+            if(jCheckBox1.isSelected()){
+               b=true;
+           }else{
+                b=false;
+            }
+            double pre=0;
+            for (int i = 0; i < pizzas.size(); i++) {
+               pre+=pizzas.get(i).getPrecio();
+           }
+     
+            if(pi.estaCliente(jTextField2.getText())==0){
+               Cliente c = new Cliente(jTextField1.getText(), jTextField2.getText(), jTextField3.getText());
+               pi.guardarCliente(c);
+            }
+            Pedido p = new Pedido(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), b , pizzas, pre);
+            pi.guardarPedido(p);
+       
+            this.dispose();
+            interfaz v = new interfaz();
+             v.setVisible(true);
+            
+            JOptionPane.showMessageDialog(null, p+"************************PIZZAS************************"+"\n"+"El importe total es: "+pre+"€");
+        }else{
+            JOptionPane.showMessageDialog(null, "rellena todos los campos");
+        }
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
@@ -399,11 +402,9 @@ public class interfaz extends javax.swing.JFrame {
         });
     }
     private Bd pi;
-    private ArrayList<Cliente> clientes;
     private DefaultListModel modelo;
     private ArrayList<String> tamaños;
     private ArrayList<String> masas;
-    private ArrayList<String> sabores;
     private ArrayList<Pizza> pizzas;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

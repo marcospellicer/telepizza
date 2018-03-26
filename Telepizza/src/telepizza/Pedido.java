@@ -17,17 +17,21 @@ public class Pedido {
     private String direccion;
     private boolean domicilio;
     private ArrayList<Pizza> pizzas;
+    private double precio;
 
-    public Pedido(String nombre, String telefono, String direccion, boolean domicilio , ArrayList<Pizza> pizzas) {
+    public Pedido(String nombre, String telefono, String direccion, boolean domicilio, ArrayList<Pizza> pizzas, double precio) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
         this.domicilio = domicilio;
         this.pizzas = pizzas;
+        this.precio = precio;
     }
+
+    
     private String aDomicilio(){
         String a="";
-        if(domicilio){
+        if(isDomicilio()){
             a="Si";
         }else{
             a="No";
@@ -114,6 +118,20 @@ public class Pedido {
      */
     public void setPizzas(ArrayList<Pizza> pizzas) {
         this.pizzas = pizzas;
+    }
+
+    /**
+     * @return the precio
+     */
+    public double getPrecio() {
+        return precio;
+    }
+
+    /**
+     * @param precio the precio to set
+     */
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
     
     
